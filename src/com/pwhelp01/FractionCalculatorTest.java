@@ -56,17 +56,19 @@ public class FractionCalculatorTest {
 	@Test
 	public void evaluateTestAbs() {	
 		
-		String inputString = "abs";												// 
+		String inputString = "abs";												// We're testing the absolute functionality
 		
 		Fraction frac1 = new Fraction(4, -5);									// Test a negative fraction
 		Fraction frac2 = new Fraction(0, 1);									// Test when fraction = 0
-		Fraction frac3 = new Fraction()
+		Fraction frac3 = new Fraction(-24, -2);									// Check when both num and denom and signed
+		Fraction frac4 = new Fraction(17, 44);									// Check absolute doesn't accidentally flip positive fractions
 		
-		Fraction expectedResult = new Fraction(4, 5);
+		Fraction expectedResult1 = new Fraction(4, 5);
+		Fraction expectedResult2 = new Fraction(0, 1);							
 		
-		Fraction actualResult = (this.fc.evaluate(frac1, inputString));
+		Fraction actualResult1 = (this.fc.evaluate(frac1, inputString));
 		
-		assertTrue (expectedResult.equals(actualResult));
+		assertTrue (expectedResult1.equals(actualResult1));
 		
 	}
 	
