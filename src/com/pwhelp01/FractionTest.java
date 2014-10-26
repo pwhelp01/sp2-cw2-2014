@@ -231,6 +231,7 @@ public class FractionTest {
 	@Test
 	public void equalsTest() {
        
+		assertTrue(new Fraction(0, 1).equals(new Fraction(-0, 1)));				// Test zero = negative zero
         assertTrue(new Fraction(1, 2).equals(new Fraction(1, 2)));				// Test a straight forward equals		
         assertTrue(new Fraction(1, 2).equals(new Fraction(3, 6)));				// Test an equals operation involving simplifying 
         assertTrue(new Fraction(-1, 2).equals(new Fraction(1, -2)));			// Test where negative two fractions are simplified
