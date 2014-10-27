@@ -14,16 +14,16 @@ import java.util.Scanner;
 public class FractionCalculator {
 	
 	/* Attributes */
-	private Fraction value; 
-	private String operation; 
-	private boolean active; 
+	private Fraction value; 													// Hold the current value in the calculator
+	private String operation; 													// Remembers an operation to perform
+	private boolean active; 													//
 	
 	
 	/* Initialisation block */
 	{
-		value = new Fraction(0,1);
-		operation = "";
-		active = false;
+		value = new Fraction(0,1);												// Set default value of calculator to zero
+		operation = "";															// No operation recorded yet
+		active = true;
 	}
 	
 	
@@ -32,8 +32,59 @@ public class FractionCalculator {
 		return this.value;
 	}
 	
+	public void setValue(Fraction frac) {
+		this.value = frac;
+	}
+	
+	public boolean getActive() {
+		return this.active;
+	}
+	
+	
 	
 	/* Methods */
+	
+	public static void main(String[] args) {
+		
+		/* Declare variables */
+		FractionCalculator fc = new FractionCalculator();						// Create new instance of FractionCalculator
+		
+		/* Print welcome message */
+		System.out.println("---------------------------------");
+		System.out.println("Fraction Calculator: Peter Whelpton (pwhelp01)");
+		System.out.println("---------------------------------");
+		
+		
+		/* Processing loop */
+		try{
+
+			while(1==1){
+				
+				System.out.println();												// Line space
+				String input = fc.getUserInput();									
+				Fraction result = (fc.evaluate(fc.getValue(), input));
+				System.out.println(" = " + result);
+				fc.setValue(result);
+			}
+			
+		}
+		catch (Exception e) {
+			
+			System.out.print("Error: ");
+			if(e.getMessage() != null) {
+				System.out.print(e.getMessage());
+			}
+			
+			fc.setValue(new Fraction(0, 1));
+			
+		}
+		finally {
+			
+			System.out.println("\n---------------------");
+			System.out.println("Goodbye");
+		}
+	
+	}
 	/**
 	 * Prompt user to type an expression to be evaluated and return the result
 	 * 
@@ -47,9 +98,8 @@ public class FractionCalculator {
 		
 		/* Prompt user for input and read it */
 		System.out.print("Please enter an expression to be evaluated: ");		// Prompt user for input
-		inputString = in.next();												// Read in whole line of user input
-		inputString = inputString.trim();										// Trim any trailing whitespace
-		in.close();																// Close scanner to avoid resource leak
+		inputString = in.nextLine();											// Read in whole line of user input
+		//in.close();															// Close scanner to avoid resource leak
 		
 		/* Return result */
 		return inputString;														// Return user input
@@ -64,9 +114,11 @@ public class FractionCalculator {
 	 * @return
 	 * @throws ArithmeticException
 	 * @throws NumberFormatException
+	 * @throws IllegalArgumentException
 	 */
 	public Fraction evaluate(Fraction frac, String inputString) 
-			throws ArithmeticException, NumberFormatException {
+			throws ArithmeticException, NumberFormatException, 
+			IllegalArgumentException  {
 		
 		String[] exp = splitString(inputString);
 		
@@ -76,7 +128,9 @@ public class FractionCalculator {
 			
 				switch(str){
 				/* Unary operations */	
-				case "a": case "A": case "abs":
+					case "\n":
+						break;
+					case "a": case "A": case "abs":
 						frac = frac.absValue();
 						break;
 					case "n": case "N": case "neg":
@@ -94,6 +148,7 @@ public class FractionCalculator {
 						Fraction newFrac = createFraction(item);
 						if(this.operation.equals("")) {
 							frac = newFrac;
+							break;
 						}
 						else {
 							switch(this.operation){
@@ -115,8 +170,10 @@ public class FractionCalculator {
 									this.operation = "";
 									break;
 							}
+							break;
 						}
-
+						default:
+							throw new IllegalArgumentException("Invalid input");
 			}
 			
 		}
