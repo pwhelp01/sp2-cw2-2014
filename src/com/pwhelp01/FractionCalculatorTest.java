@@ -54,7 +54,7 @@ public class FractionCalculatorTest {
 	 * Test the Absolute function of the evaluate() method
 	 */
 	@Test
-	public void evaluateTestAbs() {	
+	public void evaluateTestAbs() throws EndOfInputException{	
 		
 		Fraction frac1 = new Fraction(4, -5);									// Test a negative fraction
 		Fraction frac2 = new Fraction(0, 1);									// Test when fraction = 0
@@ -87,7 +87,7 @@ public class FractionCalculatorTest {
 	/**
 	 * Test the add function of the evaluate() method
 	 */
-	@Test public void evaluateTestAdd() {
+	@Test public void evaluateTestAdd() throws EndOfInputException {
 		
 		String inputString1 = "4 + 1";											// Test adding two integers
 		String inputString2 = "6 + 1 + 4";										// Test adding three integers
@@ -100,7 +100,6 @@ public class FractionCalculatorTest {
 		Fraction expectedResult3 = new Fraction(13, 12);
 		Fraction expectedResult4 = new Fraction(19, 2);
 		Fraction expectedResult5 = new Fraction(9, 8);
-		
 		
 		Fraction actualResult1 = fc.evaluate(fc.getValue(), inputString1);
 		Fraction actualResult2 = fc.evaluate(fc.getValue(), inputString2);
@@ -118,29 +117,86 @@ public class FractionCalculatorTest {
 	
 	
 	/**
+	 * Test the subtract function of the evaluate() method
+	 * 
+	 * @throws EndOfInputException
+	 */
+	@Test
+	public void evaluateSubtractTest() throws EndOfInputException {
+		
+		String inputString1 = "17/22 - 1";										// Test subtracting two positive numbers (one fraction and one int)
+		String inputString2 = "-13/19 - 4/5";									// Test one negative fraction and one positive fraction
+		String inputString3 = "64/72 - 0/1";									// Test trying to subtract zero
+		String inputString4 = "13/99 - 4 - 16/17";								// Test multiple subtraction operations
+		
+		Fraction expectedResult1 = new Fraction(-5, 22);
+		Fraction expectedResult2 = new Fraction(-141, 95);
+		Fraction expectedResult3 = new Fraction(8, 9);
+		Fraction expectedResult4 = new Fraction(-8095, 1683);
+		
+		Fraction actualResult1 = fc.evaluate(fc.getValue(), inputString1);
+		Fraction actualResult2 = fc.evaluate(fc.getValue(), inputString2);
+		Fraction actualResult3 = fc.evaluate(fc.getValue(), inputString3);
+		Fraction actualResult4 = fc.evaluate(fc.getValue(), inputString4);
+		
+		assertTrue(expectedResult1.equals(actualResult1));
+		assertTrue(expectedResult2.equals(actualResult2));
+		assertTrue(expectedResult3.equals(actualResult3));
+		assertTrue(expectedResult4.equals(actualResult4));
+	}
+	
+	
+	/**
+	 * Test the divide function of the evaluate() method
+	 * 
+	 * @throws EndOfInputException
+	 */
+	@Test
+	public void evaluateDivideTest() throws EndOfInputException {
+		
+		String inputString1 = "42/50 / 2";										// Test dividing two positive numbers (one fraction and one int)
+		String inputString2 = "-18/20 / 1/2";									// Test one negative fraction and one positive fraction
+		String inputString3 = "40/66 / 3 / 2/3";								// Test multiple subtraction operations
+		
+		Fraction expectedResult1 = new Fraction(21, 50);
+		Fraction expectedResult2 = new Fraction(-9, 5);
+		Fraction expectedResult3 = new Fraction(10, 33);
+		
+		Fraction actualResult1 = fc.evaluate(fc.getValue(), inputString1);
+		Fraction actualResult2 = fc.evaluate(fc.getValue(), inputString2);
+		Fraction actualResult3 = fc.evaluate(fc.getValue(), inputString3);
+		
+		assertTrue(expectedResult1.equals(actualResult1));
+		assertTrue(expectedResult2.equals(actualResult2));
+		assertTrue(expectedResult3.equals(actualResult3));
+
+	}
+	
+	
+	/**
 	 * Test the clear function of the evaluate() method
 	 */
 	@Test
-	public void evaluateTestClear() {
+	public void evaluateTestClear() throws EndOfInputException {
 		
-		Fraction frac1 = new Fraction(4, -5);
-		Fraction frac2 = new Fraction(55, Integer.MAX_VALUE);
-		Fraction frac3 = new Fraction(0, 1);
+		Fraction frac1 = new Fraction(4, -5);									// Test with a negative fraction
+		Fraction frac2 = new Fraction(55, Integer.MAX_VALUE);					// Test with an extreme value
+		Fraction frac3 = new Fraction(0, 1);									// Test with zero
 		
-		Fraction expectedResult = new Fraction(0, 1);
+		Fraction expectedResult = new Fraction(0, 1);							// All results should return 0
 		
-		String inputString = "clear";
+		String inputString = "clear";											// We're testing the "clear" functionality
 		Fraction actualResult1 = (fc.evaluate(frac1, inputString));
 		
-		inputString = "c";
+		inputString = "c";														// Test using "c" also works
 		Fraction actualResult2 = (fc.evaluate(frac2, inputString));
 		
 		inputString = "C";
-		Fraction actualResult3 = (fc.evaluate(frac3, inputString));
+		Fraction actualResult3 = (fc.evaluate(frac3, inputString));				// Test using "C" also works
 		
-		assertTrue(expectedResult.equals(actualResult1));
-		assertTrue(expectedResult.equals(actualResult2));
-		assertTrue(expectedResult.equals(actualResult3));
+		assertTrue(expectedResult.equals(actualResult1));						// Should equal 0
+		assertTrue(expectedResult.equals(actualResult2));						// Should equal 0
+		assertTrue(expectedResult.equals(actualResult3));						// Should equal 0
 		
 	}
 	
