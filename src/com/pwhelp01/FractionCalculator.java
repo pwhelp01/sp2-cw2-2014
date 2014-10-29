@@ -236,6 +236,7 @@ public class FractionCalculator {
 			
 		}
 		
+		this.operation = "";													// Clear stored operation (implied in coursework example)
 		return frac;															// Return the answer to the calling method
 		
 	}

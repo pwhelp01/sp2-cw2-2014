@@ -156,7 +156,7 @@ public class FractionCalculatorTest {
 		
 		String inputString1 = "42/50 / 2";										// Test dividing two positive numbers (one fraction and one int)
 		String inputString2 = "-18/20 / 1/2";									// Test one negative fraction and one positive fraction
-		String inputString3 = "40/66 / 3 / 2/3";								// Test multiple subtraction operations
+		String inputString3 = "40/66 / 3 / 2/3";								// Test multiple division operations
 		
 		Fraction expectedResult1 = new Fraction(21, 50);
 		Fraction expectedResult2 = new Fraction(-9, 5);
@@ -169,6 +169,58 @@ public class FractionCalculatorTest {
 		assertTrue(expectedResult1.equals(actualResult1));
 		assertTrue(expectedResult2.equals(actualResult2));
 		assertTrue(expectedResult3.equals(actualResult3));
+
+	}
+	
+	
+	/**
+	 * Test the multiply function of the evaluate() method
+	 * 
+	 * @throws EndOfInputException
+	 */
+	@Test
+	public void evaluateMultiplyTest() throws EndOfInputException {
+		
+		String inputString1 = "42/50 * 2";										// Test multiplying two positive numbers (one fraction and one int)
+		String inputString2 = "-18/20 * 1/2";									// Test one negative fraction and one positive fraction
+		String inputString3 = "40/66 * 3 * 2/3";								// Test multiple multiplication operations
+		
+		Fraction expectedResult1 = new Fraction(42, 25);
+		Fraction expectedResult2 = new Fraction(-9, 20);
+		Fraction expectedResult3 = new Fraction(40, 33);
+		
+		Fraction actualResult1 = fc.evaluate(fc.getValue(), inputString1);
+		Fraction actualResult2 = fc.evaluate(fc.getValue(), inputString2);
+		Fraction actualResult3 = fc.evaluate(fc.getValue(), inputString3);
+		
+		assertTrue(expectedResult1.equals(actualResult1));
+		assertTrue(expectedResult2.equals(actualResult2));
+		assertTrue(expectedResult3.equals(actualResult3));
+
+	}
+	
+	
+	/**
+	 * Test a whole expression
+	 * 
+	 * @throws EndOfInputException
+	 */
+	@Test
+	public void evaulateWholeExpressionTest() throws EndOfInputException {
+		
+		String inputString1 = "3/4 + 1/-3 * 7 / 5";								// Test a whole expression
+		String inputString2 = "1/2 - 3/4 * abs";
+		String inputString3 = "7/8 neg +";										// Test another whole expression split across two lines
+		
+		Fraction expectedResult1 = new Fraction(7, 12);
+		Fraction expectedResult2 = new Fraction(-7, 8);
+		
+		Fraction actualResult1 = fc.evaluate(fc.getValue(), inputString1);
+		Fraction frac = fc.evaluate(fc.getValue(), inputString2);
+		Fraction actualResult2 = fc.evaluate(frac, inputString3);
+		
+		assertTrue(expectedResult1.equals(actualResult1));
+		assertTrue(expectedResult2.equals(actualResult2));
 
 	}
 	
@@ -200,5 +252,66 @@ public class FractionCalculatorTest {
 		
 	}
 	
+	
+	/**
+	 * Test the having two consecutive binary operators raises an exception
+	 * 
+	 * @throws IllegalArgumentException
+	 */
+	@Test(expected=IllegalArgumentException.class)
+	public void consecutiveOperatorsException() throws EndOfInputException {
+		
+		String inputString = "4/5 + * 7";										// Test two consecutive binary operators
+		
+		Fraction frac = fc.evaluate(fc.getValue(), inputString);
+		
+	}
+	
 
+	/**
+	 * Test that quit / q / Q etc. throws an exception
+	 * @throws EndOfInputException
+	 */
+	@Test(expected=EndOfInputException.class)
+	public void quitException() throws EndOfInputException {
+		
+		String inputString = "6/2 + 1/3 quit - 9/12 fdafda";					// Check quit terminates, even if there is another error afterwards
+		
+		Fraction frac = fc.evaluate(fc.getValue(), inputString);
+		
+	}
+	
+	@Test(expected=EndOfInputException.class)
+	public void qException() throws EndOfInputException {
+		
+		String inputString = "6/2 + 1/3 q - 9/12 fdafda";						// Check quit terminates, even if there is another error afterwards
+		
+		Fraction frac = fc.evaluate(fc.getValue(), inputString);
+		
+	}
+	
+	@Test(expected=EndOfInputException.class)
+	public void QException() throws EndOfInputException {
+		
+		String inputString = "6/2 + 1/3 Q - 9/12 fdafda";						// Check quit terminates, even if there is another error afterwards
+		
+		Fraction frac = fc.evaluate(fc.getValue(), inputString);
+		
+	}
+	
+	
+	/**
+	 * Test that any invalid input (gibberish etc.) throws an appropriate
+	 * exception
+	 */
+	@Test(expected=IllegalArgumentException.class)
+	public void invalidInputException() throws EndOfInputException {
+		
+		String inputString = "4/5 fdas + 9/1";									// Check that the gibberish causes an exception to be thrown
+		
+		Fraction frac = fc.evaluate(fc.getValue(), inputString);
+		
+	}
+	
+	
 }
